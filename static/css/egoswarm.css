@@ -1,0 +1,51 @@
+/* EgoSwarm figures and quantitative results within the DexViTac template. */
+.publication-authors .author-block { color: #2563eb; }
+.publication-authors + .publication-authors .author-block { color: inherit; }
+.publication-authors small { font-size: 14px; }
+figure { margin: 0; }
+video { display: block; border-radius: 12px; }
+.rollout { margin: 35px auto 60px; }
+.rollout-video { max-width: 900px; margin: auto; }
+.rollout h3 { margin: 18px 0 8px !important; }
+.rollout-description { max-width: 1000px; margin: auto; font-size: 1.05rem; color: #444; line-height: 1.7; }
+.task-result { text-align: center; color: #64748b; }
+.task-result strong { color: #2563eb; font-size: 26px; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); margin: 35px 0 0; padding: 24px 0; border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0; text-align: center; }
+.stats > div + div { border-left: 1px solid #e2e8f0; }
+.stats strong { display: block; color: #2563eb; font-size: 33px; line-height: 1.2; }
+.stats small { font-size: 19px; }
+.stats span { display: block; font-size: 12px; color: #64748b; margin-top: 8px; }
+.table-scroll { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; text-align: right; font-size: 15px; }
+caption { text-align: left; color: #64748b; font-size: 13px; margin-bottom: 12px; }
+th, td { padding: 15px 20px; border-bottom: 1px solid #e2e8f0; }
+th:first-child { text-align: left; }
+thead { background: #f8fafc; }
+tbody th { font-weight: 500; }
+.ours { background: #eaf2ff; color: #1549a5; font-weight: 700; }
+.ours th { font-weight: 700; }
+.table-note { color: #64748b; font-size: 12px; margin-top: 12px; }
+.results-detail { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-top: 40px; }
+.results-detail h3 { font-size: 19px; font-weight: 600; margin-bottom: 15px; }
+.bar-row { margin: 15px 0; }
+.bar-row > div:first-child { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; }
+.bar-track { height: 7px; border-radius: 4px; background: #edf1f6; overflow: hidden; }
+.bar-track span { height: 100%; display: block; background: #8caee9; }
+.bar-row:last-child .bar-track span { background: #2563eb; }
+.big-number { font-size: 52px; color: #2563eb; line-height: 1.2; margin: 20px 0 12px; }
+.big-number small { font-size: 26px; }
+.runtime { font-size: 13px; margin-top: 20px; }
+.runtime div { display: flex; justify-content: space-between; border-top: 1px solid #e2e8f0; padding: 10px 0; }
+.runtime dd { font-weight: 700; }
+#copy-status { min-height: 24px; color: #2563eb; }
+@media (max-width: 700px) {
+  .stats { grid-template-columns: 1fr 1fr; gap: 25px; }
+  .stats > div:nth-child(3) { border-left: 0; }
+  .results-detail { grid-template-columns: 1fr; gap: 28px; }
+  table { min-width: 520px; }
+  th, td { padding: 12px; }
+  .publication-title { font-size: 1.7rem !important; }
+  .section { padding: 3rem 1rem; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+.publication-links .button { margin: 8px 4px; vertical-align: middle; }

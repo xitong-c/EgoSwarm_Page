@@ -1,34 +1,626 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>EgoSwarm: Learning Decentralized Robot Swarm Intelligence from Human Swarm Demonstrations</title><meta name="description" content="Learning decentralized multi-robot collaboration from 50+ hours of human swarm demonstrations with EgoSwarm Capture, SIP/SIT, and SwarmVLA.">
-<meta name="author" content="Ziqiang Liu, Xitong Chen, Min Li, Zhuoping Yin"><meta name="theme-color" content="#2563eb">
-<link rel="canonical" href="https://xitong-c.github.io/EgoSwarm_Page/"><meta property="og:type" content="website"><meta property="og:title" content="EgoSwarm: Learning Decentralized Robot Swarm Intelligence from Human Swarm Demonstrations"><meta property="og:description" content="From human collaboration to decentralized robot swarm intelligence."><meta property="og:url" content="https://xitong-c.github.io/EgoSwarm_Page/"><meta property="og:image" content="https://xitong-c.github.io/EgoSwarm_Page/static/images/overview.webp"><meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="static/images/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="static/css/index.css"><script src="static/js/index.js" defer></script></head>
-<body><a class="skip-link" href="#main">Skip to content</a>
-<nav aria-label="Page sections"><a class="wordmark" href="#">EgoSwarm<span class="dot">.</span></a><div><a href="#overview">Overview</a><a href="#capture">Capture</a><a href="#method">Method</a><a href="#demo">Demo</a><a href="#results">Results</a></div></nav>
-<main id="main"><header class="hero container"><p class="eyebrow">HUMAN COLLABORATION → ROBOT SWARM INTELLIGENCE</p><h1><span class="project-name">EgoSwarm</span><span class="subtitle">Learning <span class="blue">Decentralized Robot Swarm Intelligence</span> from <span class="purple">Human Swarm Demonstrations</span></span></h1>
-<div class="authors"><span>Ziqiang Liu<sup>1,2,†</sup></span><span>Xitong Chen<sup>1,2,†</sup></span><span>Min Li<sup>1,*</sup></span><span>Zhuoping Yin<sup>1</sup></span></div>
-<p class="affiliations"><sup>1</sup>State Key Laboratory of Intelligent Manufacturing Equipment and Technology,<br>Huazhong University of Science and Technology, Wuhan, China.<br><sup>2</sup>DexSwarmAI, Wuhan, China.</p><p class="author-note">† Equal contribution &nbsp; · &nbsp; * Corresponding author</p>
-<div class="resources"><span class="button unavailable" aria-disabled="true">Paper <small>Coming soon</small></span><span class="button unavailable" aria-disabled="true">Code <small>Coming soon</small></span><span class="button unavailable" aria-disabled="true">Dataset <small>Coming soon</small></span><a class="button" href="#demo">▷ &nbsp; Demo</a></div></header>
-<section id="overview" class="container overview"><h2 class="sr-only">Overview</h2><figure><a href="static/images/overview.webp" target="_blank" aria-label="Open full-resolution EgoSwarm framework overview"><img src="static/images/overview.webp" width="2400" height="1281" alt="EgoSwarm framework overview" fetchpriority="high"></a><figcaption><strong>From human swarm demonstrations to decentralized robot collaboration.</strong> EgoSwarm Capture records multi-person interactions; SIP and SIT transform them into locally usable supervision for SwarmVLA.</figcaption></figure>
-<div class="stats"><div><strong>50+ <small>hours</small></strong><span>Human collaboration</span></div><div><strong>30</strong><span>Scenario categories</span></div><div><strong>72.2<small>%</small></strong><span>Mean task success</span></div><div><strong>30 <small>Hz</small></strong><span>Closed-loop control</span></div></div></section>
-<section class="tinted"><div class="container narrow"><h2>Abstract</h2><p class="abstract">Advancing from individual embodied intelligence to swarm embodied intelligence is a key step toward scalable, general-purpose embodied intelligence. Complex tasks often require multiple agents to divide responsibilities, coordinate handovers, and manipulate shared objects collaboratively. However, existing robot learning methods rely primarily on individual demonstrations, which provide limited supervision for modeling dependencies among agent actions, while collecting multi-robot demonstrations at scale remains difficult. Human egocentric demonstrations offer a scalable alternative, yet distributed observations from multiple participants cannot directly supervise decentralized policies. We introduce EgoSwarm, the first robot learning framework for learning decentralized multi-robot collaboration from human swarm demonstrations. EgoSwarm collects more than 50 hours of collaborative experience using a robot-free multi-person egocentric system. We introduce the Swarm Interaction Packet (SIP) and Swarm Interaction Token (SIT) to recover cross-agent interaction relations from distributed observations and transform this experience into local supervision consistent with deployment-time information constraints. We further propose SwarmVLA, which transfers knowledge of swarm behavior to decentralized policies conditioned on local observations, local history, and limited neighbor messages. SwarmVLA achieves a mean success rate of 72.2% across three categories of multi-robot collaborative tasks.</p></div></section>
-<section id="capture" class="container section"><p class="eyebrow">01 / COLLECT</p><h2>EgoSwarm Capture</h2><p class="lead">Capture collaboration naturally. Transfer it through a shared sensing interface.</p><figure><a href="static/images/capture.webp" target="_blank" aria-label="Open full-resolution Human demonstration setup and shared robot sensing platform"><img src="static/images/capture.webp" width="2400" height="867" alt="Human demonstration setup and shared robot sensing platform" loading="lazy"></a><figcaption>Each sensing head integrates six cameras, an IMU, and UWB sensing. Robots reuse the same interface and independently run perception, the local Packetizer, and SwarmVLA on NVIDIA AGX Thor.</figcaption></figure>
-<div class="columns"><div><h3>Robot-free human demonstrations</h3><p>Synchronized egocentric recordings capture partners, shared objects, handovers, and role changes without robots at collection time.</p></div><div><h3>A consistent human–robot interface</h3><p>Shared cameras, inertial sensing, and UWB preserve interaction information across human data collection and robot execution.</p></div></div></section>
-<section id="method" class="tinted"><div class="container section"><p class="eyebrow">02 / LEARN</p><h2>SwarmVLA: Learn Together, Act Locally</h2><p class="lead">Turn distributed human experience into a shared, decentralized policy.</p><figure><a href="static/images/swarmvla.webp" target="_blank" aria-label="Open full-resolution SwarmVLA interaction reconstruction, causal teacher, and decentralized policy architecture"><img src="static/images/swarmvla.webp" width="2400" height="1342" alt="SwarmVLA interaction reconstruction, causal teacher, and decentralized policy architecture" loading="lazy"></a><figcaption><strong>Training:</strong> reconstruct interaction windows and distill a causal swarm teacher. <strong>Deployment:</strong> each robot acts using local history, online SITs, and quality-aware neighbor messages.</figcaption></figure>
-<div class="steps"><div><span>01</span><h3>Reconstruct with SIP</h3><p>Swarm Interaction Packets align multimodal recordings and recover cross-agent relations with validity and quality annotations.</p></div><div><span>02</span><h3>Encode with SIT</h3><p>Swarm Interaction Tokens encode only interaction information available at decision time, respecting deployment constraints.</p></div><div><span>03</span><h3>Coordinate with SwarmVLA</h3><p>A shared policy combines local observations and history with quality-gated neighbor messages to generate robot actions.</p></div></div></div></section>
-<section class="container section data-layout"><div><p class="eyebrow">03 / SCALE</p><h2>Three Sources.<br>One Collaboration Policy.</h2><p>Human swarm experience supplies diverse interactions. Robot adaptation data aligns embodiments. Joint robot teleoperation adds task-specific action supervision.</p><p>More than 50 hours across 30 scenario categories include natural waiting, interrupted handovers, role adjustments, and failure recovery.</p></div><figure><a href="static/images/data.webp" target="_blank" aria-label="Open full-resolution Training data pyramid"><img src="static/images/data.webp" width="2400" height="1350" alt="Training data pyramid" loading="lazy"></a><figcaption>Human swarm data · Robot adaptation · Joint robot teleoperation</figcaption></figure></section>
-<section id="demo" class="tinted"><div class="container section"><p class="eyebrow">04 / DEPLOY</p><h2>Real-World Collaboration</h2><p class="lead">Coordinated handovers, shared transport, and deformable-object manipulation.</p>
-<div class="video-wrap"><video controls muted playsinline loop preload="metadata" aria-label="EgoSwarm demo preview"><source src="static/videos/demo-preview.mp4" type="video/mp4">Your browser does not support embedded video. <a href="static/videos/demo-preview.mp4">Download the demo</a>.</video></div><p class="preview-note">Demo preview · Task-specific videos will be added in a future update.</p>
-<figure><a href="static/images/tasks.webp" target="_blank" aria-label="Open full-resolution Execution sequences for three real-world collaborative robot tasks"><img src="static/images/tasks.webp" width="2400" height="1350" alt="Execution sequences for three real-world collaborative robot tasks" loading="lazy"></a><figcaption>Representative task sequences from the manuscript. Frames progress from left to right; arrows indicate motion and dashed circles mark interaction regions.</figcaption></figure>
-<div class="task-grid"><article><span class="task-code">MRFH</span><h3>Flexible Handover</h3><p>Three robots coordinate laundry handovers and basket loading.</p><strong>80.0% <small>success</small></strong></article><article><span class="task-code">DCT</span><h3>Collaborative Transport</h3><p>Two robots load a box onto a cart; a third takes over transport.</p><strong>73.3% <small>success</small></strong></article><article><span class="task-code">LSDOM</span><h3>Deformable Objects</h3><p>Multiple robots coordinate through a shared flexible wire harness.</p><strong>63.3% <small>success</small></strong></article></div></div></section>
-<section id="results" class="container section"><p class="eyebrow">05 / EVALUATE</p><h2>Results at a Glance</h2><p class="lead">72.2% mean success, a 22.2-point gain over Dec-VLA-Comm.</p><div class="table-scroll"><table><caption>Task success (%) · 30 independent trials per task and method</caption><thead><tr><th scope="col">Method</th><th scope="col">MRFH</th><th scope="col">DCT</th><th scope="col">LSDOM</th><th scope="col">Mean</th></tr></thead><tbody>
-<tr class=""><th scope="row">Local-Rule</th><td>20.0</td><td>26.7</td><td>10.0</td><td>18.9</td></tr><tr class=""><th scope="row">Independent VLA</th><td>43.3</td><td>46.7</td><td>36.7</td><td>42.2</td></tr><tr class=""><th scope="row">Dec-VLA-Comm</th><td>63.3</td><td>56.7</td><td>30.0</td><td>50.0</td></tr><tr class=""><th scope="row">Centralized Joint VLA*</th><td>80.0</td><td>50.0</td><td>46.7</td><td>58.9</td></tr><tr class="ours"><th scope="row">EgoSwarm (ours)</th><td>80.0</td><td>73.3</td><td>63.3</td><td>72.2</td></tr></tbody></table></div><p class="table-note">* Global-observation reference. Evaluation primarily uses three robots.</p><div class="columns results-detail"><div><h3>What makes collaboration work?</h3><div class="bars"><div class="bar-row"><div><span>Robot-only</span><strong>22.2%</strong></div><div class="bar-track"><span style="width:22.2%"></span></div></div><div class="bar-row"><div><span>50% human swarm data</span><strong>53.3%</strong></div><div class="bar-track"><span style="width:53.3%"></span></div></div><div class="bar-row"><div><span>Without SIT</span><strong>38.9%</strong></div><div class="bar-track"><span style="width:38.9%"></span></div></div><div class="bar-row"><div><span>Without quality gate</span><strong>45.6%</strong></div><div class="bar-track"><span style="width:45.6%"></span></div></div><div class="bar-row"><div><span>Full SwarmVLA</span><strong>72.2%</strong></div><div class="bar-track"><span style="width:72.2%"></span></div></div></div></div><div><h3>Reliable local execution</h3><p class="big-number">66.7<small>%</small></p><p>Mean success under <strong>30% packet loss</strong> and <strong>100 ms additional delay</strong>.</p><dl class="runtime"><div><dt>P95 end-to-end latency</dt><dd>38.6 ms</dd></div><div><dt>Neighbor traffic per robot</dt><dd>11.8 KB/s</dd></div><div><dt>Relative translation RMSE</dt><dd>4.8 mm</dd></div></dl></div></div></section>
-<section class="tinted"><div class="container narrow section"><div class="citation-header"><h2>Citation</h2><button id="copy-citation" class="button" type="button">Copy BibTeX</button></div><p class="table-note">Project citation; publication details will be updated when available.</p><pre><code id="bibtex">@misc{liu2026egoswarm,
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width,initial-scale=1" name="viewport"/>
+  <title>
+   EgoSwarm: Learning Decentralized Robot Swarm Intelligence from Human Swarm Demonstrations
+  </title>
+  <meta content="Learning decentralized multi-robot collaboration from 50+ hours of human swarm demonstrations with EgoSwarm Capture, SIP/SIT, and SwarmVLA." name="description"/>
+  <meta content="Ziqiang Liu, Xitong Chen, Min Li, Zhuoping Yin" name="author"/>
+  <meta content="#2563eb" name="theme-color"/>
+  <link href="https://xitong-c.github.io/EgoSwarm_Page/" rel="canonical"/>
+  <meta content="website" property="og:type"/>
+  <meta content="EgoSwarm: Learning Decentralized Robot Swarm Intelligence from Human Swarm Demonstrations" property="og:title"/>
+  <meta content="From human collaboration to decentralized robot swarm intelligence." property="og:description"/>
+  <meta content="https://xitong-c.github.io/EgoSwarm_Page/" property="og:url"/>
+  <meta content="https://xitong-c.github.io/EgoSwarm_Page/static/images/overview.webp" property="og:image"/>
+  <meta content="summary_large_image" name="twitter:card"/>
+  <link href="static/images/favicon.svg" rel="icon" type="image/svg+xml"/>
+  <link href="static/css/bulma.min.css" rel="stylesheet"/>
+  <link href="static/css/index.css" rel="stylesheet"/>
+  <link href="static/css/egoswarm.css" rel="stylesheet"/>
+  <script defer="" src="static/js/index.js">
+  </script>
+ </head>
+ <body>
+  <main id="main-content">
+   <section class="hero">
+    <div class="hero-body">
+     <div class="container is-max-desktop">
+      <div class="columns is-centered">
+       <div class="column has-text-centered">
+        <h1 style="margin-bottom: 0; font-size: 400%; font-weight: bold;">
+         EgoSwarm
+        </h1>
+        <h1 class="title is-2 publication-title">
+         Learning
+         <span style="color:#46b1f0">
+          Decentralized Robot Swarm Intelligence
+         </span>
+         from
+         <span style="color:#9b59b6">
+          Human Swarm Demonstrations
+         </span>
+        </h1>
+        <div class="is-size-5 publication-authors">
+         <span class="author-block">
+          Ziqiang Liu
+          <sup>
+           1,2,†
+          </sup>
+          ,
+         </span>
+         <span class="author-block">
+          Xitong Chen
+          <sup>
+           1,2,†
+          </sup>
+          ,
+         </span>
+         <span class="author-block">
+          Min Li
+          <sup>
+           1,*
+          </sup>
+          ,
+         </span>
+         <span class="author-block">
+          Zhuoping Yin
+          <sup>
+           1
+          </sup>
+         </span>
+        </div>
+        <div class="is-size-5 publication-authors">
+         <span class="author-block">
+          <sup>
+           1
+          </sup>
+          State Key Laboratory of Intelligent Manufacturing Equipment and Technology,
+          <br/>
+          Huazhong University of Science and Technology, Wuhan, China.
+         </span>
+         <br/>
+         <span class="author-block">
+          <sup>
+           2
+          </sup>
+          DexSwarmAI, Wuhan, China.
+         </span>
+         <br/>
+         <small>
+          † Equal contribution   * Corresponding author
+         </small>
+        </div>
+        <div class="column has-text-centered">
+         <div class="publication-links">
+          <span class="link-block">
+           <span aria-disabled="true" class="button is-normal is-rounded is-dark">
+            Paper · Coming soon
+           </span>
+          </span>
+          <span class="link-block">
+           <span aria-disabled="true" class="button is-normal is-rounded is-dark">
+            Dataset · Coming soon
+           </span>
+          </span>
+          <span class="link-block">
+           <span aria-disabled="true" class="button is-normal is-rounded is-dark">
+            Code · Coming soon
+           </span>
+          </span>
+          <span class="link-block">
+           <a class="button is-normal is-rounded is-dark" href="#demo">
+            Demo
+           </a>
+          </span>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section>
+   <section class="hero teaser">
+    <div class="container is-max-desktop">
+     <div class="hero-body">
+      <figure>
+       <a href="static/images/overview.webp" target="_blank">
+        <img alt="EgoSwarm framework overview" fetchpriority="high" height="1281" src="static/images/overview.webp" style="width:100%;height:auto;border-radius:12px;display:block;margin:24px auto 0" width="2400"/>
+       </a>
+      </figure>
+      <div class="stats">
+       <div>
+        <strong>
+         50+
+         <small>
+          hours
+         </small>
+        </strong>
+        <span>
+         Human collaboration
+        </span>
+       </div>
+       <div>
+        <strong>
+         30
+        </strong>
+        <span>
+         Scenario categories
+        </span>
+       </div>
+       <div>
+        <strong>
+         72.2
+         <small>
+          %
+         </small>
+        </strong>
+        <span>
+         Mean task success
+        </span>
+       </div>
+       <div>
+        <strong>
+         30
+         <small>
+          Hz
+         </small>
+        </strong>
+        <span>
+         Closed-loop control
+        </span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section>
+   <section class="section hero is-light" id="">
+    <div class="container is-max-desktop">
+     <h2 class="title is-3 has-text-centered">
+      Abstract
+     </h2>
+     <div class="content has-text-justified">
+      <p>
+       Advancing from individual embodied intelligence to swarm embodied intelligence is a key step toward scalable, general-purpose embodied intelligence. Complex tasks often require multiple agents to divide responsibilities, coordinate handovers, and manipulate shared objects collaboratively. However, existing robot learning methods rely primarily on individual demonstrations, which provide limited supervision for modeling dependencies among agent actions, while collecting multi-robot demonstrations at scale remains difficult. Human egocentric demonstrations offer a scalable alternative, yet distributed observations from multiple participants cannot directly supervise decentralized policies. We introduce EgoSwarm, the first robot learning framework for learning decentralized multi-robot collaboration from human swarm demonstrations. EgoSwarm collects more than 50 hours of collaborative experience using a robot-free multi-person egocentric system. We introduce the Swarm Interaction Packet (SIP) and Swarm Interaction Token (SIT) to recover cross-agent interaction relations from distributed observations and transform this experience into local supervision consistent with deployment-time information constraints. We further propose SwarmVLA, which transfers knowledge of swarm behavior to decentralized policies conditioned on local observations, local history, and limited neighbor messages. SwarmVLA achieves a mean success rate of 72.2% across three categories of multi-robot collaborative tasks.
+      </p>
+     </div>
+    </div>
+   </section>
+   <section class="section" id="capture">
+    <div class="container is-max-desktop">
+     <h2 class="title is-3 has-text-centered">
+      System Design
+     </h2>
+     <div class="content has-text-justified">
+      <p>
+       EgoSwarm Capture synchronously records multi-person egocentric demonstrations without robots during data collection. Each sensing head integrates six cameras, an IMU, and UWB sensing. The robot platform reuses the same sensing interface and independently performs perception, local interaction processing, and SwarmVLA inference on NVIDIA AGX Thor.
+      </p>
+     </div>
+     <figure>
+      <a href="static/images/capture.webp" target="_blank">
+       <img alt="Human demonstration setup and shared robot sensing platform" height="867" loading="lazy" src="static/images/capture.webp" style="width:100%;height:auto;border-radius:12px;display:block;margin:24px auto 0" width="2400"/>
+      </a>
+     </figure>
+    </div>
+   </section>
+   <section class="section" id="">
+    <div class="container is-max-desktop">
+     <h2 class="title is-3 has-text-centered">
+      Training Data
+     </h2>
+     <div class="content has-text-justified">
+      <p>
+       The training data consists of more than 50 hours of human collaborative experience across 30 scenario categories, robot adaptation data for embodiment alignment, and joint robot teleoperation data for task-specific action supervision.
+      </p>
+     </div>
+     <figure>
+      <a href="static/images/data.webp" target="_blank">
+       <img alt="Training data pyramid" height="1350" loading="lazy" src="static/images/data.webp" style="width:70%;height:auto;border-radius:12px;display:block;margin:24px auto 0" width="2400"/>
+      </a>
+     </figure>
+    </div>
+   </section>
+   <section class="section" id="method">
+    <div class="container is-max-desktop">
+     <h2 class="title is-3 has-text-centered">
+      SwarmVLA
+     </h2>
+     <div class="content has-text-justified">
+      <p>
+       Multimodal egocentric recordings are temporally aligned and reconstructed into Swarm Interaction Packets (SIPs). A causal teacher learns from collective interaction supervision and transfers coordination representations to a decentralized student policy. During deployment, each robot constructs local Swarm Interaction Tokens (SITs) and generates actions using local observations, history, and quality-aware neighbor messages.
+      </p>
+     </div>
+     <figure>
+      <a href="static/images/swarmvla.webp" target="_blank">
+       <img alt="SwarmVLA interaction reconstruction, causal teacher, and decentralized policy architecture" height="1342" loading="lazy" src="static/images/swarmvla.webp" style="width:100%;height:auto;border-radius:12px;display:block;margin:24px auto 0" width="2400"/>
+      </a>
+     </figure>
+    </div>
+   </section>
+   <section class="section" id="demo">
+    <div class="container is-max-desktop">
+     <h2 class="title is-3 has-text-centered">
+      Autonomous Policy Rollouts
+     </h2>
+     <div class="content has-text-justified">
+      <p>
+       Deployment experiments are conducted across three representative tasks to evaluate decentralized multi-robot collaboration. The videos below currently use the same temporary demo and will be replaced with the corresponding task recordings.
+      </p>
+     </div>
+     <div class="rollout" id="mrfh">
+      <div class="rollout-video">
+       <video aria-label="Multi-Robot Flexible Handover demo placeholder" autoplay="" controls="" loop="" muted="" playsinline="" preload="metadata" width="100%">
+        <source src="static/videos/demo-preview.mp4" type="video/mp4"/>
+       </video>
+      </div>
+      <h3 class="title is-4 has-text-centered">
+       Multi-Robot Flexible Handover
+      </h3>
+      <div class="content rollout-description">
+       <p>
+        Three robots sort laundry through coordinated handovers and basket loading, testing conditional handovers and temporal coordination.
+       </p>
+       <p class="task-result">
+        <strong>
+         80.0%
+        </strong>
+        success rate
+       </p>
+      </div>
+     </div>
+     <div class="rollout" id="dct">
+      <div class="rollout-video">
+       <video aria-label="Dynamic Collaborative Transport demo placeholder" autoplay="" controls="" loop="" muted="" playsinline="" preload="metadata" width="100%">
+        <source src="static/videos/demo-preview.mp4" type="video/mp4"/>
+       </video>
+      </div>
+      <h3 class="title is-4 has-text-centered">
+       Dynamic Collaborative Transport
+      </h3>
+      <div class="content rollout-description">
+       <p>
+        Two robots load a box onto a cart before a third takes over transport, testing joint support and role transitions.
+       </p>
+       <p class="task-result">
+        <strong>
+         73.3%
+        </strong>
+        success rate
+       </p>
+      </div>
+     </div>
+     <div class="rollout" id="lsdom">
+      <div class="rollout-video">
+       <video aria-label="Large-Scale Deformable Object Manipulation demo placeholder" autoplay="" controls="" loop="" muted="" playsinline="" preload="metadata" width="100%">
+        <source src="static/videos/demo-preview.mp4" type="video/mp4"/>
+       </video>
+      </div>
+      <h3 class="title is-4 has-text-centered">
+       Large-Scale Deformable Object Manipulation
+      </h3>
+      <div class="content rollout-description">
+       <p>
+        Multiple robots jointly manipulate a wire harness, testing sustained coordination through a shared deformable object.
+       </p>
+       <p class="task-result">
+        <strong>
+         63.3%
+        </strong>
+        success rate
+       </p>
+      </div>
+     </div>
+    </div>
+   </section>
+   <section class="section" id="results">
+    <div class="container is-max-desktop">
+     <h2 class="title is-3 has-text-centered">
+      Experimental Results
+     </h2>
+     <div class="content has-text-justified">
+      <p>
+       EgoSwarm achieves a mean success rate of 72.2% across three tasks, exceeding Dec-VLA-Comm by 22.2 percentage points. Each method is evaluated in 30 independent trials per task.
+      </p>
+     </div>
+     <div class="table-scroll">
+      <table>
+       <caption>
+        Task success (%) · 30 independent trials per task and method
+       </caption>
+       <thead>
+        <tr>
+         <th scope="col">
+          Method
+         </th>
+         <th scope="col">
+          MRFH
+         </th>
+         <th scope="col">
+          DCT
+         </th>
+         <th scope="col">
+          LSDOM
+         </th>
+         <th scope="col">
+          Mean
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr class="">
+         <th scope="row">
+          Local-Rule
+         </th>
+         <td>
+          20.0
+         </td>
+         <td>
+          26.7
+         </td>
+         <td>
+          10.0
+         </td>
+         <td>
+          18.9
+         </td>
+        </tr>
+        <tr class="">
+         <th scope="row">
+          Independent VLA
+         </th>
+         <td>
+          43.3
+         </td>
+         <td>
+          46.7
+         </td>
+         <td>
+          36.7
+         </td>
+         <td>
+          42.2
+         </td>
+        </tr>
+        <tr class="">
+         <th scope="row">
+          Dec-VLA-Comm
+         </th>
+         <td>
+          63.3
+         </td>
+         <td>
+          56.7
+         </td>
+         <td>
+          30.0
+         </td>
+         <td>
+          50.0
+         </td>
+        </tr>
+        <tr class="">
+         <th scope="row">
+          Centralized Joint VLA*
+         </th>
+         <td>
+          80.0
+         </td>
+         <td>
+          50.0
+         </td>
+         <td>
+          46.7
+         </td>
+         <td>
+          58.9
+         </td>
+        </tr>
+        <tr class="ours">
+         <th scope="row">
+          EgoSwarm (ours)
+         </th>
+         <td>
+          80.0
+         </td>
+         <td>
+          73.3
+         </td>
+         <td>
+          63.3
+         </td>
+         <td>
+          72.2
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <p class="table-note">
+      * Global-observation reference. Evaluation primarily uses three robots.
+     </p>
+     <div class="results-detail">
+      <div>
+       <h3>
+        Ablation Studies
+       </h3>
+       <div class="bars">
+        <div class="bar-row">
+         <div>
+          <span>
+           Robot-only
+          </span>
+          <strong>
+           22.2%
+          </strong>
+         </div>
+         <div class="bar-track">
+          <span style="width:22.2%">
+          </span>
+         </div>
+        </div>
+        <div class="bar-row">
+         <div>
+          <span>
+           50% human swarm data
+          </span>
+          <strong>
+           53.3%
+          </strong>
+         </div>
+         <div class="bar-track">
+          <span style="width:53.3%">
+          </span>
+         </div>
+        </div>
+        <div class="bar-row">
+         <div>
+          <span>
+           Without SIT
+          </span>
+          <strong>
+           38.9%
+          </strong>
+         </div>
+         <div class="bar-track">
+          <span style="width:38.9%">
+          </span>
+         </div>
+        </div>
+        <div class="bar-row">
+         <div>
+          <span>
+           Without quality gate
+          </span>
+          <strong>
+           45.6%
+          </strong>
+         </div>
+         <div class="bar-track">
+          <span style="width:45.6%">
+          </span>
+         </div>
+        </div>
+        <div class="bar-row">
+         <div>
+          <span>
+           Full SwarmVLA
+          </span>
+          <strong>
+           72.2%
+          </strong>
+         </div>
+         <div class="bar-track">
+          <span style="width:72.2%">
+          </span>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div>
+       <h3>
+        Communication Robustness and Runtime
+       </h3>
+       <p class="big-number">
+        66.7
+        <small>
+         %
+        </small>
+       </p>
+       <p>
+        Mean success under
+        <strong>
+         30% packet loss
+        </strong>
+        and
+        <strong>
+         100 ms additional delay
+        </strong>
+        .
+       </p>
+       <dl class="runtime">
+        <div>
+         <dt>
+          P95 end-to-end latency
+         </dt>
+         <dd>
+          38.6 ms
+         </dd>
+        </div>
+        <div>
+         <dt>
+          Neighbor traffic per robot
+         </dt>
+         <dd>
+          11.8 KB/s
+         </dd>
+        </div>
+        <div>
+         <dt>
+          Relative translation RMSE
+         </dt>
+         <dd>
+          4.8 mm
+         </dd>
+        </div>
+       </dl>
+      </div>
+     </div>
+    </div>
+   </section>
+   <section class="section" id="BibTeX">
+    <div class="container is-max-desktop">
+     <h2 class="title is-3 has-text-centered">
+      BibTeX
+     </h2>
+     <div class="content has-text-justified">
+      <p>
+      </p>
+     </div>
+     <button class="button is-dark" id="copy-citation" type="button">
+      Copy BibTeX
+     </button>
+     <pre><code id="bibtex">@misc{liu2026egoswarm,
   title={EgoSwarm: Learning Decentralized Robot Swarm Intelligence
          from Human Swarm Demonstrations},
   author={Ziqiang Liu and Xitong Chen and Min Li and Zhuoping Yin},
   year={2026},
   url={https://xitong-c.github.io/EgoSwarm_Page/}
-}</code></pre><p id="copy-status" role="status" aria-live="polite"></p></div></section></main>
-<footer class="container"><p><strong>EgoSwarm</strong> · Huazhong University of Science and Technology · DexSwarmAI</p><p>Design adapted from <a href="https://xitong-c.github.io/DexViTac/">DexViTac</a>, following the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template">Academic Project Page Template</a> and <a href="https://nerfies.github.io/">Nerfies</a>.</p><p><a href="https://github.com/xitong-c/EgoSwarm_Page">Website source</a></p></footer><a class="back-top" href="#" aria-label="Back to top">↑</a></body></html>
+}</code></pre>
+     <p aria-live="polite" id="copy-status" role="status">
+     </p>
+    </div>
+   </section>
+  </main>
+  <footer class="footer">
+   <div class="container">
+    <div class="columns is-centered">
+     <div class="column is-8">
+      <div class="content">
+       <p>
+        This page was built using the
+        <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">
+         Academic Project Page Template
+        </a>
+        which was adopted from the
+        <a href="https://nerfies.github.io" target="_blank">
+         Nerfies
+        </a>
+        project page.
+            You are free to borrow the source code of this website, we just ask that you link back to this page in the footer.
+        <br/>
+        This website is licensed under a
+        <a href="http://creativecommons.org/licenses/by-sa/4.0/" rel="license" target="_blank">
+         Creative
+            Commons Attribution-ShareAlike 4.0 International License
+        </a>
+        .
+       </p>
+      </div>
+     </div>
+    </div>
+   </div>
+  </footer>
+ </body>
+</html>
