@@ -21,7 +21,7 @@ Run `python3 -m http.server 8000` from this directory and open http://localhost:
 
 Web videos are H.264 MP4 exports with fast-start metadata; original edited files remain unchanged in `webpage/videodemo`.
 
-Author order and affiliations follow the supplied poster. Paper, code, and dataset are marked coming soon because release URLs have not been supplied. No conference acceptance or arXiv identifier is assumed. Replace those resource badges with links when released. Each of the three deployment tasks has its own video player, followed by its task title, description, and success rate. Each player now uses its corresponding edited task video.
+Author order follows the updated author list: Xitong Chen, Ziqiang Liu, Min Li, Yiqun Li, and Zhuoping Yin. Xitong Chen and Ziqiang Liu share equal contribution; Min Li is the corresponding author. Only the HUST laboratory affiliation is displayed. Paper, code, and dataset are marked coming soon because release URLs have not been supplied. No conference acceptance or arXiv identifier is assumed. Replace those resource badges with links when released. Each of the three deployment tasks has its own video player, followed by its task title, description, and success rate. Each player now uses its corresponding edited task video.
 
 Deploy through GitHub Pages from `main`, root directory. No build step or third-party runtime scripts are required.
 
